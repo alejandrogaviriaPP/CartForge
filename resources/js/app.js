@@ -1,7 +1,8 @@
 import './bootstrap';
 
-import Alpine from 'alpinejs';
+import { addToCart, removeFromCart, updateQuantity, checkout } from './cart';
 
-window.Alpine = Alpine;
-
-Alpine.start();
+window.addToCart = addToCart;
+window.removeFromCart = removeFromCart;
+window.updateQuantity = updateQuantity;
+window.checkout = checkout;

@@ -8,9 +8,22 @@ use App\Models\Product;
 class ProductController extends Controller
 {
 
+
+
 public function index()
 {
     $products = Product::all();
+
     return view('products.index', compact('products'));
+}
+public function create()
+{
+    return view('products.create');
+}
+public function store(Request $request)
+{
+    \App\Models\Product::create($request->all());
+
+    return redirect('/products');
 }
 }
