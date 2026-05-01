@@ -77,9 +77,9 @@
 
     <div class="mt-6 text-right">
 
-        <h2 class="text-xl font-bold">
-            Total: ${{ number_format($total, 2, '.', ',') }}
-        </h2>
+        <h2 id="cart-total" class="text-xl font-bold">
+    Total: ${{ number_format($total, 2, '.', ',') }}
+</h2>
 <button id="real-checkout-btn" class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">
     Checkout
 </button>

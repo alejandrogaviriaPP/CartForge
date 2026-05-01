@@ -29,7 +29,11 @@ function addToCart(id) {
 }
 </script>
 <div id="toast"
-     class="fixed bottom-5 right-5 z-[9999] bg-green-600 text-white px-4 py-3 rounded-lg shadow-xl opacity-0 pointer-events-none transition-all duration-300">
+     class="fixed bottom-6 right-6 z-[9999]
+            bg-blue-500/80  text-white px-4 py-3  rounded-xl shadow-lg
+            opacity-0 translate-y-6 scale-95
+            pointer-events-none
+            transition-all duration-300 ease-out">
     Product added to cart 🛒
 </div>
 <body class="bg-gray-100 font-sans">
