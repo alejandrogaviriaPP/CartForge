@@ -42,8 +42,9 @@ public function remove($id)
     session()->put('cart', $cart);
 
     return response()->json([
-        'success' => true,
-        'cartCount' => array_sum(array_column($cart, 'quantity'))
+    'success' => true,
+    'cartCount' => array_sum(array_column($cart, 'quantity')),
+    'total' => array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart))
     ]);
 }
 
