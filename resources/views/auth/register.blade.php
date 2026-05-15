@@ -1,52 +1,89 @@
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
-        @csrf
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register - CartForge</title>
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
 
-        <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" class="block mt-1 w-full" type="text" name="name" :value="old('name')" required autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
+<body class="bg-gray-100 font-sans">
+
+<div class="min-h-screen flex items-center justify-center">
+
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl
+                animate-[fadeIn_0.6s_ease]">
+
+        <h2 class="text-2xl font-bold text-center mb-2">
+            Create your account
+        </h2>
+
+        <p class="text-sm text-gray-500 text-center mb-6">
+            Start building your shopping experience
+        </p>
+
+        <!-- GOOGLE -->
+        <a href="/auth/google"
+           class="flex items-center justify-center gap-2 w-full border rounded-lg py-2 hover:bg-gray-100 transition">
+            <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
+            <span>Continue with Google</span>
+        </a>
+
+        <!-- SEPARADOR -->
+        <div class="flex items-center my-4">
+            <div class="flex-grow h-px bg-gray-300"></div>
+            <span class="px-3 text-gray-400 text-sm">or</span>
+            <div class="flex-grow h-px bg-gray-300"></div>
         </div>
 
-        <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')" required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
+        <form method="POST" action="{{ route('register') }}">
+            @csrf
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
+            <input type="text" name="name" placeholder="Name"
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
-            <x-text-input id="password" class="block mt-1 w-full"
-                            type="password"
-                            name="password"
-                            required autocomplete="new-password" />
+             <input type="text" name="address" placeholder="Address"
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">    
 
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
+            <input type="email" name="email" placeholder="Email"
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
-        <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
+            <input id="password" type="password" name="password" placeholder="Password"
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
-            <x-text-input id="password_confirmation" class="block mt-1 w-full"
-                            type="password"
-                            name="password_confirmation" required autocomplete="new-password" />
+            <input type="password" name="password_confirmation" placeholder="Confirm Password"
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
+            <!-- SHOW PASSWORD -->
+            <button type="button" onclick="togglePassword()" 
+                class="text-xs text-gray-500 mt-1">
+                Show password
+            </button>
 
-        <div class="flex items-center justify-end mt-4">
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800" href="{{ route('login') }}">
-                {{ __('Already registered?') }}
+            <button
+                class="w-full mt-6 bg-black text-white py-2 rounded-lg
+                       hover:bg-gray-800 transition active:scale-95 hover:shadow-lg">
+                Create Account
+            </button>
+
+        </form>
+
+        <div class="text-center mt-4">
+            <a href="{{ route('login') }}" class="text-sm text-gray-600 hover:text-black">
+                Already registered?
             </a>
-
-            <x-primary-button class="ms-4">
-                {{ __('Register') }}
-            </x-primary-button>
         </div>
-    </form>
-</x-guest-layout>
+
+    </div>
+
+</div>
+
+<script>
+function togglePassword() {
+    const input = document.getElementById("password");
+    input.type = input.type === "password" ? "text" : "password";
+}
+</script>
+
+</body>
+</html>
