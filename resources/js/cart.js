@@ -1,54 +1,77 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const btn = document.getElementById('checkout-btn');
 
-    if (btn) {
-        btn.addEventListener('click', window.checkout);
-    }
+    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const id = btn.dataset.id;
+            addToCart(id);
+        });
+    });
+
 });
 
 
-// =========================
-// 🔥 TOAST SYSTEM
-// =========================
-function showToast(message = "Product added to cart 🛒") {
+function showToast(message) {
     const toast = document.getElementById("toast");
-
     if (!toast) return;
 
     toast.innerText = message;
 
-    toast.classList.remove("opacity-0", "translate-y-6", "scale-95");
-    toast.classList.add("opacity-100", "translate-y-0", "scale-100");
+    // Reset classes
+    toast.classList.remove("toast-out");
+    toast.classList.add("toast-in");
 
+    // Mostrar
+    toast.style.opacity = "1";
+
+    // Ocultar después
     setTimeout(() => {
-        toast.classList.remove("opacity-100", "translate-y-0", "scale-100");
-        toast.classList.add("opacity-0", "translate-y-6", "scale-95");
-    }, 2000);
+        toast.classList.remove("toast-in");
+        toast.classList.add("toast-out");
+    }, 1000);
 }
 
 
-// =========================
-// 🛒 ADD TO CART
-// =========================
+
 export function addToCart(id) {
 
     fetch(`/cart/add/${id}`, {
         method: "POST",
         headers: {
             "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "Accept": "application/json"
         }
     })
-    .then(res => res.json())
+    .then(async (res) => {
+
+        if (res.status === 401) {
+
+            // 🔥 GUARDAMOS EL PRODUCTO
+            localStorage.setItem("pendingProduct", id);
+
+            await Swal.fire({
+                icon: 'info',
+                title: 'Login required',
+                text: 'You need to login to add items to your cart',
+                confirmButtonText: 'Go to login'
+            });
+
+            window.location.href = "/login";
+            return null;
+        }
+
+        return res.json();
+    })
     .then(data => {
+
+        if (!data) return;
 
         document.getElementById("cart-count").innerText = data.cartCount;
 
         showToast("Product added to cart 🛒");
+        animateCartCount();
     });
-
 }
-
 
 // =========================
 // ❌ REMOVE FROM CART (FIXED TOTAL BUG)
@@ -179,4 +202,28 @@ export function checkout() {
         });
 
     });
+}
+
+function animateCartCount() {
+    console.log("ANIMATION TRIGGERED"); // 👈 prueba
+
+    const count = document.getElementById("cart-count");
+
+    if (!count) return;
+
+    count.classList.add("scale-125");
+
+    setTimeout(() => {
+        count.classList.remove("scale-125");
+        count.classList.add("scale-110");
+    }, 110);
+
+    setTimeout(() => {
+        count.classList.remove("scale-110");
+    }, 220);
+}
+
+function togglePassword() {
+    const input = document.querySelector('input[name="password"]');
+    input.type = input.type === "password" ? "text" : "password";
 }

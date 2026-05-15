@@ -23,13 +23,15 @@ class AuthenticatedSessionController extends Controller
      * Handle an incoming authentication request.
      */
     public function store(LoginRequest $request): RedirectResponse
-    {
-        $request->authenticate();
+{
+    $request->authenticate();
 
-        $request->session()->regenerate();
+    $request->session()->regenerate();
 
-        return redirect()->intended(route('dashboard', absolute: false));
-    }
+    // Añadimos ->with('status', '...') para pasar el mensaje a la siguiente sesión
+    return redirect()->intended('/products')
+        ->with('status', '¡Bienvenido de nuevo a CartForge!');
+}
 
     /**
      * Destroy an authenticated session.

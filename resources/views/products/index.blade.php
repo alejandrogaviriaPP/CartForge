@@ -13,8 +13,9 @@
 
             <!-- Imagen -->
             <div class="w-full aspect-square bg-white flex items-center justify-center p-0 transition duration-300 transform hover:-translate-y-2">
-                <img src="{{ asset($product->image) }}" 
-                     class="max-h-full object-contain">
+               <img id="product-img-{{ $product->id }}"
+     src="{{ asset($product->image) }}" 
+     class="max-h-full object-contain">
             </div>
 
             <div class="p-2 flex flex-col flex-grow text-center">
@@ -43,18 +44,34 @@
 
 </div>
 
-                <!-- Precio -->
-                <span class="mt-2 text-lg font-bold text-gray-900">
-                    ${{ number_format($product->price, 2) }}
-                </span>
+                <div class="flex items-center justify-center gap-2 mt-1">
+
+    @if($product->old_price)
+
+                    
+        <span class="text-sm text-gray-400 line-through">
+            ${{ $product->old_price }}
+        </span>
+
+    @endif
+    
+
+    <span class="font-semibold text-xl tracking-tight">
+        ${{ $product->price }}
+        
+    </span>
+    
+
+</div>
 
                 <!-- Botón -->
                 <button
-                    onclick="addToCart({{ $product->id }})"
-                    class="mt-3 bg-blue-600 text-white px-4 py-2 rounded
-                           hover:bg-blue-700 transition duration-300 transform hover:-translate-y-1">
-                    Add to cart
-                </button>
+    class="add-to-cart-btn mt-3 bg-blue-600 text-white px-4 py-2 rounded
+           hover:bg-blue-700 transition duration-300
+           active:scale-95 transform hover:-translate-y-1"
+    data-id="{{ $product->id }}">
+    Add to cart
+</button>
 
             </div>
 
