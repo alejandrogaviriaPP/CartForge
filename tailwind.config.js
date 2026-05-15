@@ -12,8 +12,8 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Inter', 'ui-sans-serif', 'system-ui'],
-        },
+                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+            },
         },
     },
 
