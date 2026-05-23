@@ -44,7 +44,7 @@ class CartController extends Controller
         return response()->json([
             'success' => true,
             'cartCount' => array_sum(array_column($cart, 'quantity')),
-            'total' => array_sum(array_map(fn ($item) => $item['price'] * $item['quantity'], $cart)),
+            'total' => array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart)),
         ]);
     }
 
@@ -59,7 +59,6 @@ class CartController extends Controller
             } else {
                 $cart[$id]['quantity'] = $request->quantity;
             }
-
         }
 
         session()->put('cart', $cart);

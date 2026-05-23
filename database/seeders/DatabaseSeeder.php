@@ -11,15 +11,10 @@ class DatabaseSeeder extends Seeder
 {
     use WithoutModelEvents;
 
-    /**
-     * Seed the application's database.
-     */
     public function run(): void
     {
-        // 1. Llamamos a tus productos existentes
         $this->call(ProductSeeder::class);
 
-        // 2. Creamos o actualizamos el usuario Demo para los reclutadores
         User::updateOrCreate(
             ['email' => 'admin@cartforge.com'],
             [

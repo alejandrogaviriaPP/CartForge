@@ -1,15 +1,12 @@
 /* global Swal */
-document.addEventListener('DOMContentLoaded', () => {
-
-    document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
+document.addEventListener("DOMContentLoaded", () => {
+    document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
             const id = btn.dataset.id;
             addToCart(id);
         });
     });
-
 });
-
 
 function showToast(message) {
     const toast = document.getElementById("toast");
@@ -26,29 +23,25 @@ function showToast(message) {
     }, 1000);
 }
 
-
-
 export function addToCart(id) {
-
     fetch(`/cart/add/${id}`, {
         method: "POST",
         headers: {
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                .content,
             "Content-Type": "application/json",
-            "Accept": "application/json"
-        }
+            Accept: "application/json",
+        },
     })
         .then(async (res) => {
-
             if (res.status === 401) {
-
                 localStorage.setItem("pendingProduct", id);
 
                 await Swal.fire({
-                    icon: 'info',
-                    title: 'Login required',
-                    text: 'You need to login to add items to your cart',
-                    confirmButtonText: 'Go to login'
+                    icon: "info",
+                    title: "Login required",
+                    text: "You need to login to add items to your cart",
+                    confirmButtonText: "Go to login",
                 });
 
                 window.location.href = "/login";
@@ -57,8 +50,7 @@ export function addToCart(id) {
 
             return res.json();
         })
-        .then(data => {
-
+        .then((data) => {
             if (!data) return;
 
             document.getElementById("cart-count").innerText = data.cartCount;
@@ -69,17 +61,16 @@ export function addToCart(id) {
 }
 
 export function removeFromCart(id) {
-
     fetch(`/cart/remove/${id}`, {
         method: "POST",
         headers: {
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "Content-Type": "application/json"
-        }
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                .content,
+            "Content-Type": "application/json",
+        },
     })
-        .then(res => res.json())
-        .then(data => {
-
+        .then((res) => res.json())
+        .then((data) => {
             document.getElementById("cart-count").innerText = data.cartCount;
 
             const item = document.getElementById(`item-${id}`);
@@ -93,81 +84,75 @@ export function removeFromCart(id) {
                 totalEl.innerText = `Total: $${parseFloat(data.total).toFixed(2)}`;
             }
         });
-
 }
 
-
 export function updateQuantity(id, quantity) {
-
     fetch(`/cart/update/${id}`, {
         method: "POST",
         headers: {
-            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
-            "Content-Type": "application/json"
+            "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]')
+                .content,
+            "Content-Type": "application/json",
         },
-        body: JSON.stringify({ quantity })
+        body: JSON.stringify({ quantity }),
     })
-        .then(res => res.json())
-        .then(data => {
-
+        .then((res) => res.json())
+        .then((data) => {
             document.getElementById("cart-count").innerText = data.cartCount;
 
             location.reload();
         });
-
 }
 
 export function checkout() {
-
     const cartCount = parseInt(document.getElementById("cart-count").innerText);
 
     if (cartCount === 0) {
         Swal.fire({
-            icon: 'info',
-            title: 'Empty Cart',
-            text: 'Your shopping cart is currently empty.',
-            confirmButtonColor: '#3085d6'
+            icon: "info",
+            title: "Empty Cart",
+            text: "Your shopping cart is currently empty.",
+            confirmButtonColor: "#3085d6",
         });
         return;
     }
 
     Swal.fire({
-        title: 'Are you sure?',
+        title: "Are you sure?",
         text: "Do you want to complete this purchase?",
-        icon: 'question',
+        icon: "question",
         showCancelButton: true,
-        confirmButtonColor: '#16a34a',
-        cancelButtonColor: '#d33',
-        confirmButtonText: 'Yes, checkout!',
-        cancelButtonText: 'Cancel'
+        confirmButtonColor: "#16a34a",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, checkout!",
+        cancelButtonText: "Cancel",
     }).then((result) => {
-
         if (!result.isConfirmed) return;
 
-        fetch('/cart/checkout', {
+        fetch("/cart/checkout", {
             method: "POST",
             headers: {
-                "X-CSRF-TOKEN": document.querySelector('meta[name="csrf-token"]').content,
+                "X-CSRF-TOKEN": document.querySelector(
+                    'meta[name="csrf-token"]',
+                ).content,
                 "Content-Type": "application/json",
-                "Accept": "application/json"
-            }
+                Accept: "application/json",
+            },
         })
-            .then(res => res.json())
-            .then(data => {
-
+            .then((res) => res.json())
+            .then((data) => {
                 if (data.success) {
-
                     Swal.fire({
-                        icon: 'success',
-                        title: 'Order Placed!',
-                        text: 'Your order has been processed successfully.',
+                        icon: "success",
+                        title: "Order Placed!",
+                        text: "Your order has been processed successfully.",
                         timer: 1000,
-                        showConfirmButton: false
+                        showConfirmButton: false,
                     });
 
                     document.getElementById("cart-count").innerText = 0;
 
-                    const cartContainer = document.querySelector('.max-w-4xl');
+                    const cartContainer = document.querySelector(".max-w-4xl");
 
                     if (cartContainer) {
                         cartContainer.innerHTML = `
@@ -181,9 +166,12 @@ export function checkout() {
                 }
             })
             .catch(() => {
-                Swal.fire('Error', 'Something went wrong with the transaction.', 'error');
+                Swal.fire(
+                    "Error",
+                    "Something went wrong with the transaction.",
+                    "error",
+                );
             });
-
     });
 }
 
