@@ -11,7 +11,6 @@
         @foreach($products as $product)
         <div class="bg-white rounded-xl shadow-sm flex flex-col overflow-visible">
 
-            <!-- Imagen -->
             <div class="w-full aspect-square bg-white flex items-center justify-center p-0 transition duration-300 transform hover:-translate-y-2">
                <img id="product-img-{{ $product->id }}"
      src="{{ asset($product->image) }}" 
@@ -27,22 +26,19 @@
 
                 <div class="relative inline-block mt-1 group">
 
-    <!-- Texto corto -->
     <p class="text-sm text-gray-600 truncate cursor-pointer">
         {{ $product->description }}
     </p>
 
-    <!-- Tooltip -->
     <div class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 
                 w-64 p-3 rounded-lg bg-gray-900 text-white text-xs 
                 opacity-0 invisible transition-all duration-200
                 group-hover:opacity-100 group-hover:visible
                 pointer-events-none shadow-lg z-50">
-
-        {{ $product->description }}
+                {{ $product->description }}
     </div>
 
-</div>
+    </div>
 
                 <div class="flex items-center justify-center gap-2 mt-1">
 
@@ -64,7 +60,6 @@
 
 </div>
 
-                <!-- Botón -->
                 <button
     class="add-to-cart-btn mt-3 bg-blue-600 text-white px-4 py-2 rounded
            hover:bg-blue-700 transition duration-300

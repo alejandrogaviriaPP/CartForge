@@ -32,7 +32,6 @@
 
                 <div class="mt-2 flex items-center gap-2">
 
-                    <!-- - -->
                     <button type="button"
                         onclick="updateQuantity({{ $id }}, {{ $item['quantity'] - 1 }})"
                         class="w-8 h-8 border rounded hover:bg-gray-100">
@@ -43,7 +42,6 @@
                         {{ $item['quantity'] }}
                     </span>
 
-                    <!-- + -->
                     <button type="button"
                         onclick="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
                         class="w-8 h-8 bg-blue-600 text-white rounded hover:bg-blue-700">
@@ -85,7 +83,7 @@
 </button>
 
 <script>
-    // Esto asegura que el botón funcione incluso si el módulo de Vite tarda en cargar
+
     document.addEventListener('DOMContentLoaded', function() {
         const btn = document.getElementById('real-checkout-btn');
         if (btn) {

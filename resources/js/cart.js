@@ -1,3 +1,4 @@
+/* global Swal */
 document.addEventListener('DOMContentLoaded', () => {
 
     document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
@@ -15,15 +16,10 @@ function showToast(message) {
     if (!toast) return;
 
     toast.innerText = message;
-
-    // Reset classes
     toast.classList.remove("toast-out");
     toast.classList.add("toast-in");
-
-    // Mostrar
     toast.style.opacity = "1";
 
-    // Ocultar después
     setTimeout(() => {
         toast.classList.remove("toast-in");
         toast.classList.add("toast-out");
@@ -42,40 +38,36 @@ export function addToCart(id) {
             "Accept": "application/json"
         }
     })
-    .then(async (res) => {
+        .then(async (res) => {
 
-        if (res.status === 401) {
+            if (res.status === 401) {
 
-            // 🔥 GUARDAMOS EL PRODUCTO
-            localStorage.setItem("pendingProduct", id);
+                localStorage.setItem("pendingProduct", id);
 
-            await Swal.fire({
-                icon: 'info',
-                title: 'Login required',
-                text: 'You need to login to add items to your cart',
-                confirmButtonText: 'Go to login'
-            });
+                await Swal.fire({
+                    icon: 'info',
+                    title: 'Login required',
+                    text: 'You need to login to add items to your cart',
+                    confirmButtonText: 'Go to login'
+                });
 
-            window.location.href = "/login";
-            return null;
-        }
+                window.location.href = "/login";
+                return null;
+            }
 
-        return res.json();
-    })
-    .then(data => {
+            return res.json();
+        })
+        .then(data => {
 
-        if (!data) return;
+            if (!data) return;
 
-        document.getElementById("cart-count").innerText = data.cartCount;
+            document.getElementById("cart-count").innerText = data.cartCount;
 
-        showToast("Product added to cart 🛒");
-        animateCartCount();
-    });
+            showToast("Product added to cart 🛒");
+            animateCartCount();
+        });
 }
 
-// =========================
-// ❌ REMOVE FROM CART (FIXED TOTAL BUG)
-// =========================
 export function removeFromCart(id) {
 
     fetch(`/cart/remove/${id}`, {
@@ -85,30 +77,26 @@ export function removeFromCart(id) {
             "Content-Type": "application/json"
         }
     })
-    .then(res => res.json())
-    .then(data => {
+        .then(res => res.json())
+        .then(data => {
 
-        document.getElementById("cart-count").innerText = data.cartCount;
+            document.getElementById("cart-count").innerText = data.cartCount;
 
-        const item = document.getElementById(`item-${id}`);
-        if (item) item.remove();
+            const item = document.getElementById(`item-${id}`);
+            if (item) item.remove();
 
-        showToast("Product removed from cart");
+            showToast("Product removed from cart");
 
-        // 🔥 FIX IMPORTANTE: recalcular total sin recargar página
-        const totalEl = document.getElementById("cart-total");
+            const totalEl = document.getElementById("cart-total");
 
-        if (totalEl && data.total !== undefined) {
-            totalEl.innerText = `Total: $${parseFloat(data.total).toFixed(2)}`;
-        }
-    });
+            if (totalEl && data.total !== undefined) {
+                totalEl.innerText = `Total: $${parseFloat(data.total).toFixed(2)}`;
+            }
+        });
 
 }
 
 
-// =========================
-// 🔄 UPDATE QUANTITY
-// =========================
 export function updateQuantity(id, quantity) {
 
     fetch(`/cart/update/${id}`, {
@@ -119,21 +107,16 @@ export function updateQuantity(id, quantity) {
         },
         body: JSON.stringify({ quantity })
     })
-    .then(res => res.json())
-    .then(data => {
+        .then(res => res.json())
+        .then(data => {
 
-        document.getElementById("cart-count").innerText = data.cartCount;
+            document.getElementById("cart-count").innerText = data.cartCount;
 
-        // mejor que reload (opcional mejorar luego)
-        location.reload();
-    });
+            location.reload();
+        });
 
 }
 
-
-// =========================
-// 💳 CHECKOUT
-// =========================
 export function checkout() {
 
     const cartCount = parseInt(document.getElementById("cart-count").innerText);
@@ -169,43 +152,43 @@ export function checkout() {
                 "Accept": "application/json"
             }
         })
-        .then(res => res.json())
-        .then(data => {
+            .then(res => res.json())
+            .then(data => {
 
-            if (data.success) {
+                if (data.success) {
 
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Order Placed!',
-                    text: 'Your order has been processed successfully.',
-                    timer: 1000,
-                    showConfirmButton: false
-                });
+                    Swal.fire({
+                        icon: 'success',
+                        title: 'Order Placed!',
+                        text: 'Your order has been processed successfully.',
+                        timer: 1000,
+                        showConfirmButton: false
+                    });
 
-                document.getElementById("cart-count").innerText = 0;
+                    document.getElementById("cart-count").innerText = 0;
 
-                const cartContainer = document.querySelector('.max-w-4xl'); 
+                    const cartContainer = document.querySelector('.max-w-4xl');
 
-                if (cartContainer) {
-                    cartContainer.innerHTML = `
+                    if (cartContainer) {
+                        cartContainer.innerHTML = `
                         <div class="text-center py-10">
                             <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
                             <p class="text-gray-500">Your cart is now empty. Thank you for your purchase!</p>
                             <a href="/products" class="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg">Back to Products</a>
                         </div>
                     `;
+                    }
                 }
-            }
-        })
-        .catch(() => {
-            Swal.fire('Error', 'Something went wrong with the transaction.', 'error');
-        });
+            })
+            .catch(() => {
+                Swal.fire('Error', 'Something went wrong with the transaction.', 'error');
+            });
 
     });
 }
 
 function animateCartCount() {
-    console.log("ANIMATION TRIGGERED"); // 👈 prueba
+    console.log("ANIMATION TRIGGERED");
 
     const count = document.getElementById("cart-count");
 
@@ -221,9 +204,4 @@ function animateCartCount() {
     setTimeout(() => {
         count.classList.remove("scale-110");
     }, 220);
-}
-
-function togglePassword() {
-    const input = document.querySelector('input[name="password"]');
-    input.type = input.type === "password" ? "text" : "password";
 }

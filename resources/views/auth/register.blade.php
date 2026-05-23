@@ -22,14 +22,12 @@
             Start building your shopping experience
         </p>
 
-        <!-- GOOGLE -->
         <a href="/auth/google"
            class="flex items-center justify-center gap-2 w-full border rounded-lg py-2 hover:bg-gray-100 transition">
             <img src="https://www.svgrepo.com/show/475656/google-color.svg" class="w-5 h-5">
             <span>Continue with Google</span>
         </a>
 
-        <!-- SEPARADOR -->
         <div class="flex items-center my-4">
             <div class="flex-grow h-px bg-gray-300"></div>
             <span class="px-3 text-gray-400 text-sm">or</span>
@@ -54,7 +52,6 @@
             <input type="password" name="password_confirmation" placeholder="Confirm Password"
                 class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
-            <!-- SHOW PASSWORD -->
             <button type="button" onclick="togglePassword()" 
                 class="text-xs text-gray-500 mt-1">
                 Show password
