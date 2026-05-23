@@ -7,7 +7,6 @@ window.checkout = checkout;
 
 document.addEventListener('DOMContentLoaded', () => {
 
-
     const pending = localStorage.getItem("pendingProduct");
 
     if (pending && window.isLoggedIn) {
@@ -20,7 +19,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 });
-  const searchBtn = document.getElementById("search-btn");
+const searchBtn = document.getElementById("search-btn");
 const overlay = document.getElementById("search-overlay");
 const closeBtn = document.getElementById("close-search");
 const searchContent = document.getElementById("search-content");
@@ -94,25 +93,41 @@ if (searchBtn && overlay && closeBtn && searchContent) {
     });
 
     searchContent.addEventListener("mouseleave", startCloseTimer);
-
     searchBtn.addEventListener("mouseleave", startCloseTimer);
-
     closeBtn.addEventListener("click", closeSearch);
+    document.addEventListener('DOMContentLoaded', () => {
+        const searchBtn = document.getElementById('search-btn');
+        const closeSearch = document.getElementById('close-search');
+        const searchOverlay = document.getElementById('search-overlay');
+        const searchContent = document.getElementById('search-content');
 
-    document.addEventListener("keydown", (e) => {
+        if (searchBtn && closeSearch) {
+            searchBtn.addEventListener('click', () => {
+                searchOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => searchContent.classList.remove('-translate-y-20', 'opacity-0'), 50);
+            });
 
-        if (e.key === "Escape") {
-            closeSearch();
+            closeSearch.addEventListener('click', () => {
+                searchContent.classList.add('-translate-y-20', 'opacity-0');
+                setTimeout(() => searchOverlay.classList.add('opacity-0', 'pointer-events-none'), 200);
+            });
         }
 
-    });
+        const categoriesBtn = document.getElementById('categories-btn');
+        const closeCategories = document.getElementById('close-categories');
+        const categoriesOverlay = document.getElementById('categories-overlay');
+        const categoriesContent = document.getElementById('categories-content');
 
-    overlay.addEventListener("click", (e) => {
+        if (categoriesBtn && closeCategories) {
+            categoriesBtn.addEventListener('click', () => {
+                categoriesOverlay.classList.remove('opacity-0', 'pointer-events-none');
+                setTimeout(() => categoriesContent.classList.remove('-translate-y-20', 'opacity-0'), 50);
+            });
 
-        if (e.target === overlay) {
-            closeSearch();
+            closeCategories.addEventListener('click', () => {
+                categoriesContent.classList.add('-translate-y-20', 'opacity-0');
+                setTimeout(() => categoriesOverlay.classList.add('opacity-0', 'pointer-events-none'), 200);
+            });
         }
-
     });
-
 }
