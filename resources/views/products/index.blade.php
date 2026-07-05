@@ -1,20 +1,21 @@
 @extends('layouts.app')
 
-@section('title', 'Products')
+@section('title', __('Products'))
 
 @section('content')
 
     <div class="max-w-7xl mx-auto px-4 py-2">
 
-        <div class="grid gap-6 sm:grid-cols-1 lg:grid-cols-4">
+        <div class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
 
             @foreach ($products as $product)
                 <div class="bg-white rounded-xl shadow-sm flex flex-col overflow-visible">
 
                     <div
-                        class="w-full aspect-square bg-white flex items-center justify-center p-0 transition duration-300 transform hover:-translate-y-2">
+                        class="w-full aspect-square bg-white flex items-center justify-center p-3 transition duration-300 transform hover:-translate-y-2 overflow-hidden">
                         <img id="product-img-{{ $product->id }}" src="{{ asset($product->image) }}"
-                            class="max-h-full object-contain">
+                            alt="{{ $product->name }}"
+                            class="w-full h-full object-contain">
                     </div>
 
                     <div class="p-2 flex flex-col flex-grow text-center">
@@ -62,7 +63,7 @@
                                  hover:bg-blue-700 transition duration-300
                                    active:scale-95 transform hover:-translate-y-1"
                             data-id="{{ $product->id }}">
-                            Add to cart
+                            {{ __('Add to cart') }}
                         </button>
 
                     </div>

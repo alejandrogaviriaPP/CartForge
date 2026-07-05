@@ -2,12 +2,14 @@
 
 use App\Http\Controllers\Auth\GoogleController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'information'])->name('home');
 Route::resource('products', ProductController::class);
+Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 Route::middleware('auth')->group(function () {
 
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');

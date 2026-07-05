@@ -4,8 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Mail;
+use App\Services\LoginVerification;
 use Illuminate\Support\Str;
 use Laravel\Socialite\Facades\Socialite;
 
@@ -31,15 +30,8 @@ class GoogleController extends Controller
             ]
         );
 
-        if ($user->wasRecentlyCreated) {
-            Mail::raw('Welcome! Your account was created with Google.', function ($message) use ($user) {
-                $message->to($user->email)
-                    ->subject('Welcome to CartForge');
-            });
-        }
+        app(LoginVerification::class)->startFor($user);
 
-        Auth::login($user);
-
-        return redirect('/products');
+        return redirect()->route('login.verify')->with('status', __('login_code.sent'));
     }
 }

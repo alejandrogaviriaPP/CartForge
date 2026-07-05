@@ -73,6 +73,20 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
+        // Resolve the (localized) product name from the live model so that
+        // switching locale is reflected on the cart without the name being
+        // frozen in the language it was added with.
+        if (! empty($cart)) {
+            $products = Product::whereIn('id', array_keys($cart))->get()->keyBy('id');
+
+            foreach ($cart as $id => &$item) {
+                if (isset($products[$id])) {
+                    $item['name'] = $products[$id]->name;
+                }
+            }
+            unset($item);
+        }
+
         return view('products.cart', compact('cart'));
     }
 

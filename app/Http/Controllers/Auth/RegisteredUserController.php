@@ -3,12 +3,13 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Mail\WelcomeMail;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
+use App\Services\LoginVerification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Validation\Rules;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -42,10 +43,16 @@ class RegisteredUserController extends Controller
             'password' => Hash::make($request->password),
         ]);
 
-        event(new Registered($user));
+        // Branded welcome email (best-effort).
+        try {
+            Mail::to($user)->send(new WelcomeMail($user));
+        } catch (\Throwable $e) {
+            logger()->error('Welcome email failed: '.$e->getMessage());
+        }
 
-        Auth::login($user);
+        // Confirm the email with the 2FA verification code (proves ownership).
+        app(LoginVerification::class)->startFor($user);
 
-        return redirect(route('dashboard', absolute: false));
+        return redirect()->route('login.verify')->with('status', __('login_code.sent'));
     }
 }

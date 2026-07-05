@@ -1,4 +1,8 @@
 /* global Swal */
+
+// Translate helper: reads strings injected by the layout (window.i18n).
+const t = (key, fallback = "") => (window.i18n && window.i18n[key]) || fallback;
+
 document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll(".add-to-cart-btn").forEach((btn) => {
         btn.addEventListener("click", () => {
@@ -39,9 +43,9 @@ export function addToCart(id) {
 
                 await Swal.fire({
                     icon: "info",
-                    title: "Login required",
-                    text: "You need to login to add items to your cart",
-                    confirmButtonText: "Go to login",
+                    title: t("login_required_title", "Login required"),
+                    text: t("login_required_text", "You need to login to add items to your cart"),
+                    confirmButtonText: t("go_to_login", "Go to login"),
                 });
 
                 window.location.href = "/login";
@@ -55,7 +59,7 @@ export function addToCart(id) {
 
             document.getElementById("cart-count").innerText = data.cartCount;
 
-            showToast("Product added to cart 🛒");
+            showToast(t("added", "Product added to cart"));
             animateCartCount();
         });
 }
@@ -76,12 +80,12 @@ export function removeFromCart(id) {
             const item = document.getElementById(`item-${id}`);
             if (item) item.remove();
 
-            showToast("Product removed from cart");
+            showToast(t("removed", "Product removed from cart"));
 
             const totalEl = document.getElementById("cart-total");
 
             if (totalEl && data.total !== undefined) {
-                totalEl.innerText = `Total: $${parseFloat(data.total).toFixed(2)}`;
+                totalEl.innerText = `${t("total_label", "Total:")} $${parseFloat(data.total).toFixed(2)}`;
             }
         });
 }
@@ -110,22 +114,22 @@ export function checkout() {
     if (cartCount === 0) {
         Swal.fire({
             icon: "info",
-            title: "Empty Cart",
-            text: "Your shopping cart is currently empty.",
+            title: t("empty_cart_title", "Empty Cart"),
+            text: t("empty_cart_text", "Your shopping cart is currently empty."),
             confirmButtonColor: "#3085d6",
         });
         return;
     }
 
     Swal.fire({
-        title: "Are you sure?",
-        text: "Do you want to complete this purchase?",
+        title: t("checkout_confirm_title", "Are you sure?"),
+        text: t("checkout_confirm_text", "Do you want to complete this purchase?"),
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#16a34a",
         cancelButtonColor: "#d33",
-        confirmButtonText: "Yes, checkout!",
-        cancelButtonText: "Cancel",
+        confirmButtonText: t("yes_checkout", "Yes, checkout!"),
+        cancelButtonText: t("cancel", "Cancel"),
     }).then((result) => {
         if (!result.isConfirmed) return;
 
@@ -144,8 +148,8 @@ export function checkout() {
                 if (data.success) {
                     Swal.fire({
                         icon: "success",
-                        title: "Order Placed!",
-                        text: "Your order has been processed successfully.",
+                        title: t("order_placed_title", "Order Placed!"),
+                        text: t("order_placed_text", "Your order has been processed successfully."),
                         timer: 1000,
                         showConfirmButton: false,
                     });
@@ -157,9 +161,9 @@ export function checkout() {
                     if (cartContainer) {
                         cartContainer.innerHTML = `
                         <div class="text-center py-10">
-                            <h1 class="text-3xl font-bold mb-6">Shopping Cart</h1>
-                            <p class="text-gray-500">Your cart is now empty. Thank you for your purchase!</p>
-                            <a href="/products" class="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg">Back to Products</a>
+                            <h1 class="text-3xl font-bold mb-6">${t("shopping_cart", "Shopping Cart")}</h1>
+                            <p class="text-gray-500">${t("cart_empty_thanks", "Your cart is now empty. Thank you for your purchase!")}</p>
+                            <a href="/products" class="mt-4 inline-block bg-blue-600 text-white px-6 py-2 rounded-lg">${t("back_to_products", "Back to Products")}</a>
                         </div>
                     `;
                     }
@@ -167,8 +171,8 @@ export function checkout() {
             })
             .catch(() => {
                 Swal.fire(
-                    "Error",
-                    "Something went wrong with the transaction.",
+                    t("error_title", "Error"),
+                    t("error_text", "Something went wrong with the transaction."),
                     "error",
                 );
             });

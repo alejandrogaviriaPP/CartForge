@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Services\LoginVerification;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -24,12 +25,20 @@ class AuthenticatedSessionController extends Controller
      */
     public function store(LoginRequest $request): RedirectResponse
     {
-        $request->authenticate();
+        // Validate credentials WITHOUT logging in.
+        $user = $request->verifyCredentials();
 
-        $request->session()->regenerate();
+        // The demo/test account has no real inbox, so it skips email 2FA.
+        if ($user->email === 'admin@cartforge.com') {
+            Auth::login($user, $request->boolean('remember'));
+            $request->session()->regenerate();
 
-        return redirect()->intended('/products')
-            ->with('status', '¡Welcome back to CartForge!');
+            return redirect()->route('home')->with('status', __('welcome_back'));
+        }
+
+        app(LoginVerification::class)->startFor($user, $request->boolean('remember'));
+
+        return redirect()->route('login.verify')->with('status', __('login_code.sent'));
     }
 
     public function destroy(Request $request): RedirectResponse
