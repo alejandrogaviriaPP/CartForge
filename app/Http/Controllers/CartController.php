@@ -73,6 +73,17 @@ class CartController extends Controller
     {
         $cart = session()->get('cart', []);
 
+        if (! empty($cart)) {
+            $products = Product::whereIn('id', array_keys($cart))->get()->keyBy('id');
+
+            foreach ($cart as $id => &$item) {
+                if (isset($products[$id])) {
+                    $item['name'] = $products[$id]->name;
+                }
+            }
+            unset($item);
+        }
+
         return view('products.cart', compact('cart'));
     }
 

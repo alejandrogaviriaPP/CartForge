@@ -1,12 +1,12 @@
 @extends('layouts.app')
 
-@section('title', 'Cart')
+@section('title', __('Cart'))
 
 @section('content')
 
     <div class="max-w-4xl mx-auto p-6">
 
-        <h1 class="text-3xl font-bold mb-6 text-center">Shopping Cart</h1>
+        <h1 class="text-3xl font-bold mb-6 text-center">{{ __('Shopping Cart') }}</h1>
 
         @php $total = 0; @endphp
 
@@ -20,7 +20,8 @@
 
                 <div class="flex items-center gap-4">
 
-                    <img src="{{ asset($item['image']) }}" class="w-20 h-20 object-contain">
+                    <img src="{{ asset($item['image']) }}" alt="{{ $item['name'] }}"
+                        class="w-16 h-16 sm:w-20 sm:h-20 object-contain shrink-0 rounded-lg">
 
                     <div>
                         <h2 class="font-semibold">{{ $item['name'] }}</h2>
@@ -60,7 +61,7 @@
 
                     <button type="button" onclick="removeFromCart({{ $id }})"
                         class="text-red-500 text-sm mt-2 hover:underline">
-                        Remove
+                        {{ __('Remove') }}
                     </button>
 
                 </div>
@@ -68,17 +69,17 @@
             </div>
 
         @empty
-            <p class="text-center">Your cart is empty.</p>
+            <p class="text-center">{{ __('Your cart is empty.') }}</p>
         @endforelse
 
         <div class="mt-6 text-right">
 
             <h2 id="cart-total" class="text-xl font-bold">
-                Total: ${{ number_format($total, 2, '.', ',') }}
+                {{ __('Total:') }} ${{ number_format($total, 2, '.', ',') }}
             </h2>
             <button id="real-checkout-btn"
                 class="bg-green-600 text-white px-6 py-2 rounded-lg font-bold hover:bg-green-700 transition">
-                Checkout
+                {{ __('Checkout') }}
             </button>
 
             <script>

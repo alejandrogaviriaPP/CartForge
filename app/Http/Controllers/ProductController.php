@@ -31,9 +31,12 @@ class ProductController extends Controller
         $query = Product::query();
 
         if ($request->filled('search')) {
-            $query->where(function ($q) use ($request) {
+            $nameCol = app()->isLocale('es') ? 'name_es' : 'name';
 
-                $q->where('name', 'like', '%' . $request->search . '%')
+            $query->where(function ($q) use ($request, $nameCol) {
+
+                $q->where($nameCol, 'like', '%' . $request->search . '%')
+                    ->orWhere('name', 'like', '%' . $request->search . '%')
                     ->orWhere('brand', 'like', '%' . $request->search . '%');
             });
         }
