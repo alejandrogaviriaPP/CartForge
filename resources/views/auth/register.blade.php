@@ -13,12 +13,12 @@
     <x-language-switcher class="bg-white/70 backdrop-blur rounded-lg p-1" />
 </div>
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center px-4 py-8">
 
-    <div class="w-full max-w-md bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-lg p-5 sm:p-8 rounded-2xl shadow-xl
                 animate-[fadeIn_0.6s_ease]">
 
-        <h2 class="text-2xl font-bold text-center mb-2">
+        <h2 class="text-xl sm:text-2xl font-bold text-center mb-2">
             {{ __('Create your account') }}
         </h2>
 

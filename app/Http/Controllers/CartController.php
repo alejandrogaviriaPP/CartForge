@@ -77,14 +77,15 @@ class CartController extends Controller
             $products = Product::whereIn('id', array_keys($cart))->get()->keyBy('id');
 
             foreach ($cart as $id => &$item) {
-                if (isset($products[$id])) {
-                    $item['name'] = $products[$id]->name;
-                }
+                $item['name'] = $products[$id]->name ?? $item['name'];
+                $item['subtotal'] = $item['price'] * $item['quantity'];
             }
             unset($item);
         }
 
-        return view('products.cart', compact('cart'));
+        $total = array_sum(array_column($cart, 'subtotal'));
+
+        return view('products.cart', compact('cart', 'total'));
     }
 
     public function checkout()

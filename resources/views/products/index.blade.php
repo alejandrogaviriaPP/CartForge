@@ -4,35 +4,38 @@
 
 @section('content')
 
-    <div class="max-w-7xl mx-auto px-4 py-2">
+    <div class="max-w-7xl mx-auto px-2 sm:px-4 py-2">
 
-        <div class="grid grid-cols-2 gap-4 sm:gap-6 md:grid-cols-3 lg:grid-cols-4">
+        <div id="products-grid" class="grid grid-cols-2 gap-2 sm:gap-3 md:grid-cols-3 lg:grid-cols-4 lg:gap-6">
 
             @foreach ($products as $product)
-                <div class="bg-white rounded-xl shadow-sm flex flex-col overflow-visible">
+                <div class="bg-white rounded-xl shadow-sm flex flex-col overflow-visible min-w-0">
 
-                    <div
-                        class="w-full aspect-square bg-white flex items-center justify-center p-3 transition duration-300 transform hover:-translate-y-2 overflow-hidden">
-                        <img id="product-img-{{ $product->id }}" src="{{ asset($product->image) }}"
-                            alt="{{ $product->name }}"
-                            class="w-full h-full object-contain">
-                    </div>
+                    <a href="{{ route('products.show', $product) }}">
+                        <div
+                            class="w-full aspect-square bg-white flex items-center justify-center p-2 sm:p-4 transition duration-300 transform hover:-translate-y-2 overflow-hidden">
+                            <img id="product-img-{{ $product->id }}" src="{{ asset($product->image) }}"
+                                alt="{{ $product->name }}"
+                                class="w-full h-full object-contain">
+                        </div>
+                    </a>
 
-                    <div class="p-2 flex flex-col flex-grow text-center">
+                    <div class="p-2 sm:p-3 flex flex-col flex-grow text-center min-w-0">
 
-                        <h2 class="text-base font-semibold text-gray-900">
+                        <a href="{{ route('products.show', $product) }}"
+                            class="text-sm sm:text-base font-semibold text-gray-900 truncate hover:text-blue-600 transition">
                             {{ $product->name }}
-                        </h2>
+                        </a>
 
-                        <div class="relative inline-block mt-1 group">
+                        <div class="relative inline-block mt-1 group min-w-0">
 
-                            <p class="text-sm text-gray-600 truncate cursor-pointer">
+                            <p class="text-xs sm:text-sm text-gray-600 truncate cursor-pointer">
                                 {{ $product->description }}
                             </p>
 
                             <div
                                 class="absolute bottom-full left-1/2 -translate-x-1/2 mb-2 
-                                       w-64 p-3 rounded-lg bg-gray-900 text-white text-xs 
+                                       w-48 sm:w-64 p-3 rounded-lg bg-gray-900 text-white text-xs 
                                        opacity-0 invisible transition-all duration-200
                                        group-hover:opacity-100 group-hover:visible
                                        pointer-events-none shadow-lg z-50">
@@ -41,28 +44,28 @@
 
                         </div>
 
-                        <div class="flex items-center justify-center gap-2 mt-1">
+                        <div class="flex items-center justify-center gap-1 sm:gap-2 mt-1 flex-wrap">
 
                             @if ($product->old_price)
-                                <span class="text-sm text-gray-400 line-through">
+                                <span class="text-xs sm:text-sm text-gray-400 line-through">
                                     ${{ $product->old_price }}
                                 </span>
                             @endif
 
 
-                            <span class="font-semibold text-xl tracking-tight">
+                            <a href="{{ route('products.show', $product) }}"
+                                class="font-semibold text-base sm:text-xl tracking-tight hover:text-blue-600 transition">
                                 ${{ $product->price }}
-
-                            </span>
+                            </a>
 
 
                         </div>
 
                         <button
-                            class="add-to-cart-btn mt-3 bg-blue-600 text-white px-4 py-2 rounded
+                            data-id="{{ $product->id }}"
+                            class="add-to-cart-btn mt-2 sm:mt-3 bg-blue-600 text-white px-2 sm:px-4 py-1.5 sm:py-2 rounded text-xs sm:text-sm
                                  hover:bg-blue-700 transition duration-300
-                                   active:scale-95 transform hover:-translate-y-1"
-                            data-id="{{ $product->id }}">
+                                   active:scale-95 transform hover:-translate-y-1 w-full">
                             {{ __('Add to cart') }}
                         </button>
 
