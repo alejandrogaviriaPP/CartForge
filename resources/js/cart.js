@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 
-function showToast(message) {
+export function showToast(message) {
     const toast = document.getElementById("toast");
     if (!toast) return;
 
@@ -43,7 +43,10 @@ export function addToCart(id) {
                 await Swal.fire({
                     icon: "info",
                     title: t("login_required_title", "Login required"),
-                    text: t("login_required_text", "You need to login to add items to your cart"),
+                    text: t(
+                        "login_required_text",
+                        "You need to login to add items to your cart",
+                    ),
                     confirmButtonText: t("go_to_login", "Go to login"),
                 });
 
@@ -51,15 +54,26 @@ export function addToCart(id) {
                 return null;
             }
 
+            if (!res.ok) {
+                throw new Error(`HTTP ${res.status}`);
+            }
+
             return res.json();
         })
         .then((data) => {
             if (!data) return;
 
-            document.getElementById("cart-count").innerText = data.cartCount;
+            const countEl = document.getElementById("cart-count");
+
+            if (countEl && data.cartCount !== undefined) {
+                countEl.innerText = data.cartCount;
+            }
 
             showToast(t("added", "Product added to cart"));
             animateCartCount();
+        })
+        .catch(() => {
+            showToast(t("error_text", "Something went wrong"));
         });
 }
 
@@ -114,7 +128,10 @@ export function checkout() {
         Swal.fire({
             icon: "info",
             title: t("empty_cart_title", "Empty Cart"),
-            text: t("empty_cart_text", "Your shopping cart is currently empty."),
+            text: t(
+                "empty_cart_text",
+                "Your shopping cart is currently empty.",
+            ),
             confirmButtonColor: "#3085d6",
         });
         return;
@@ -122,7 +139,10 @@ export function checkout() {
 
     Swal.fire({
         title: t("checkout_confirm_title", "Are you sure?"),
-        text: t("checkout_confirm_text", "Do you want to complete this purchase?"),
+        text: t(
+            "checkout_confirm_text",
+            "Do you want to complete this purchase?",
+        ),
         icon: "question",
         showCancelButton: true,
         confirmButtonColor: "#16a34a",
@@ -148,7 +168,10 @@ export function checkout() {
                     Swal.fire({
                         icon: "success",
                         title: t("order_placed_title", "Order Placed!"),
-                        text: t("order_placed_text", "Your order has been processed successfully."),
+                        text: t(
+                            "order_placed_text",
+                            "Your order has been processed successfully.",
+                        ),
                         timer: 1000,
                         showConfirmButton: false,
                     });
@@ -171,7 +194,10 @@ export function checkout() {
             .catch(() => {
                 Swal.fire(
                     t("error_title", "Error"),
-                    t("error_text", "Something went wrong with the transaction."),
+                    t(
+                        "error_text",
+                        "Something went wrong with the transaction.",
+                    ),
                     "error",
                 );
             });
@@ -179,8 +205,6 @@ export function checkout() {
 }
 
 function animateCartCount() {
-    console.log("ANIMATION TRIGGERED");
-
     const count = document.getElementById("cart-count");
 
     if (!count) return;

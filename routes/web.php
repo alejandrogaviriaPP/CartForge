@@ -8,9 +8,12 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'information'])->name('home');
+Route::get('/products/{product}/reviews', [ProductController::class, 'reviews'])->name('products.reviews');
 Route::resource('products', ProductController::class);
 Route::get('/language/{locale}', [LanguageController::class, 'switch'])->name('language.switch');
 Route::middleware('auth')->group(function () {
+
+    Route::post('/products/{product}/rate', [ProductController::class, 'rate'])->name('products.rate');
 
     Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 
@@ -36,4 +39,4 @@ Route::middleware(['auth', 'verified'])->group(function () {
 Route::get('/auth/google', [GoogleController::class, 'redirect']);
 Route::get('/auth/google/callback', [GoogleController::class, 'callback']);
 
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

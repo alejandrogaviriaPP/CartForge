@@ -1,4 +1,5 @@
 import { addToCart, removeFromCart, updateQuantity, checkout } from "./cart";
+import "./product";
 
 window.addToCart = addToCart;
 window.removeFromCart = removeFromCart;

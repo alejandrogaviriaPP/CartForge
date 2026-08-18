@@ -13,12 +13,12 @@
     <x-language-switcher class="bg-white/70 backdrop-blur rounded-lg p-1" />
 </div>
 
-<div class="min-h-screen flex items-center justify-center">
+<div class="min-h-screen flex items-center justify-center px-4 py-8">
 
-    <div class="w-full max-w-md bg-white/80 backdrop-blur-lg p-8 rounded-2xl shadow-xl
+    <div class="w-full max-w-md bg-white/80 backdrop-blur-lg p-5 sm:p-8 rounded-2xl shadow-xl
                 animate-[fadeIn_0.6s_ease]">
 
-        <h2 class="text-2xl font-bold text-center mb-2">
+        <h2 class="text-xl sm:text-2xl font-bold text-center mb-2">
             {{ __('Welcome back') }}
         </h2>
 
@@ -32,7 +32,7 @@
             </div>
         @endif
 
-        <div class="mb-6 p-4 bg-gray-50 border border-gray-200 rounded-2xl text-xs text-gray-600">
+        <div class="mb-6 p-3 sm:p-4 bg-gray-50 border border-gray-200 rounded-2xl text-xs text-gray-600">
             <p class="font-semibold text-gray-900 mb-1">{{ __('Testing the app?') }}</p>
             <p class="mb-3">{{ __('Use the guest credentials below to explore all features instantly without registering.') }}</p>
 
