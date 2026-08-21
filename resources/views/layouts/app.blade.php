@@ -22,7 +22,7 @@
 <body class="bg-gray-100 font-sans">
 
     <div id="toast" class="fixed bottom-6 right-6 z-[9999]
-            bg-blue-500/80 backdrop-blur-md text-white
+            bg-green-600 backdrop-blur-md text-white
             px-5 py-3 rounded-2xl shadow-xl
             opacity-0 translate-y-10 scale-90
             pointer-events-none
@@ -127,7 +127,7 @@
 
     <nav
         class="bg-white/70 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-50 text-[13px] tracking-tighter font-normal text-gray-800">
-        <div class="max-w-[1024px] mx-auto px-3 sm:px-6 h-12 flex items-center justify-between">
+        <div class="max-w-[1024px] xl:max-w-[1600px] mx-auto px-3 sm:px-6 h-12 flex items-center justify-between">
 
             <div class="flex justify-start shrink-0">
                 <a href=""
@@ -166,17 +166,7 @@
                         </span>
                     </a>
 
-                    <form method="POST" action="{{ route('logout') }}" class="flex items-center">
-                        @csrf
-                        <button type="submit" title="{{ __('Logout') }}"
-                            class="hover:scale-105 active:scale-95 transition text-gray-700 hover:text-red-600">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
-                                stroke="currentColor" class="w-4 h-4">
-                                <path stroke-linecap="round" stroke-linejoin="round"
-                                    d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
-                            </svg>
-                        </button>
-                    </form>
+                    <x-profile-link class="ml-1 sm:ml-2 pl-2 sm:pl-4 border-l border-gray-200" />
                 @else
                     <a href="/login" title="{{ __('Login') }}"
                         class="hover:scale-105 active:scale-95 transition text-gray-700 hover:text-blue-600">
@@ -186,16 +176,16 @@
                                 d="M2.25 3h1.386a1.5 1.5 0 0 1 1.415 1.022L5.383 5.25m0 0h13.867 a1.5 1.5 0 0 1 1.464 1.825l-1.5 7.5 a1.5 1.5 0 0 1-1.464 1.175H8.239 a1.5 1.5 0 0 1-1.464-1.175L5.383 5.25Zm3.367 13.5a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm8.25 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
                     </a>
-                @endauth
 
-                <x-language-switcher class="ml-1 sm:ml-2 pl-2 sm:pl-4 border-l border-gray-200" />
+                    <x-language-switcher class="ml-1 sm:ml-2 pl-2 sm:pl-4 border-l border-gray-200" />
+                @endauth
 
             </div>
 
         </div>
     </nav>
 
-    <main class="max-w-7xl mx-auto px-3 sm:px-6 py-6 sm:py-10">
+    <main class="max-w-7xl xl:max-w-[1600px] mx-auto px-3 sm:px-6 py-6 sm:py-10">
         @yield('content')
     </main>
 

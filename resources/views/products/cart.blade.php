@@ -37,7 +37,7 @@
 
                             <button type="button"
                                 onclick="updateQuantity({{ $id }}, {{ $item['quantity'] + 1 }})"
-                                class="w-7 h-7 sm:w-8 sm:h-8 bg-blue-600 text-white rounded hover:bg-blue-700 flex items-center justify-center">
+                                class="w-7 h-7 sm:w-8 sm:h-8 bg-green-600 text-white rounded flex items-center justify-center">
                                 +
                             </button>
 
