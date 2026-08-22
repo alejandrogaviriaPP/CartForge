@@ -13,8 +13,15 @@ class ProfileController extends Controller
 {
     public function edit(Request $request): View
     {
+        $user = $request->user();
+
+        $orders = $user->orders()->with('items')->latest()->get();
+        $wishlistCount = $user->wishlistProducts()->count();
+
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'orders' => $orders,
+            'wishlistCount' => $wishlistCount,
         ]);
     }
 

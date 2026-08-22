@@ -147,5 +147,23 @@
     "Submit rating": "Submit rating",
     "select_rating": "Please select a rating",
     "no_reviews_yet": "No reviews yet",
-    "be_first_to_review": "Be the first to review this product"
+    "be_first_to_review": "Be the first to review this product",
+
+    "Wishlist": "Wishlist",
+    "Add to wishlist": "Add to wishlist",
+    "View products added": "View products added",
+    "products saved": "products saved",
+    "Your wishlist is empty.": "Your wishlist is empty.",
+    "Discover products": "Discover products",
+    "My orders": "My orders",
+    "No orders yet": "No orders yet",
+    "Delivered": "Delivered",
+    "Arrives between :min and :max": "Arrives between :min and :max",
+    "items": "items",
+    "Country": "Country",
+    "Phone": "Phone",
+    "Added to your wishlist": "Added to your wishlist",
+    "Removed from your wishlist": "Removed from your wishlist",
+    "Log in to save favorites": "Log in to save favorites",
+    "Could not update your wishlist": "Could not update your wishlist"
 }

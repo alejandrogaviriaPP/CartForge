@@ -49,6 +49,59 @@
                 </div>
             </section>
 
+            <section
+                class="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-4 sm:p-6 flex items-center justify-between gap-4">
+                <div class="min-w-0">
+                    <h2 class="text-base font-semibold text-gray-900">{{ __('Wishlist') }}</h2>
+                    <p class="text-xs text-gray-500 mt-0.5">
+                        {{ $wishlistCount }} {{ __('products saved') }}
+                    </p>
+                </div>
+                <a href="{{ route('wishlist.index') }}"
+                    class="shrink-0 flex items-center gap-2 bg-green-600 text-white px-4 py-2 rounded-lg text-sm hover:-translate-y-0.5 active:scale-95 transition">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor"
+                        fill="none" class="w-4 h-4">
+                        <path stroke-linecap="round" stroke-linejoin="round"
+                            d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" />
+                    </svg>
+                    {{ __('View products added') }}
+                </a>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-4 sm:p-6">
+                <h2 class="text-base font-semibold text-gray-900 mb-4">{{ __('My orders') }}</h2>
+
+                @forelse ($orders as $order)
+                    <div class="flex items-center justify-between gap-3 py-3 {{ ! $loop->first ? 'border-t border-gray-100' : '' }}">
+                        <div class="min-w-0">
+                            <p class="text-sm font-semibold text-gray-900">${{ number_format($order->total, 2) }}</p>
+                            <p class="text-xs text-gray-500 truncate">
+                                {{ $order->created_at->locale(app()->getLocale())->translatedFormat('d M Y') }} ·
+                                {{ $order->items->sum('quantity') }} {{ __('items') }} ·
+                                {{ $order->items->first()->name }}@if ($order->items->count() > 1)+{{ $order->items->count() - 1 }}@endif
+                            </p>
+                        </div>
+                        <div class="text-right shrink-0">
+                            @if ($order->delivery_max->isPast())
+                                <span class="inline-flex text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                                    {{ __('Delivered') }}
+                                </span>
+                            @else
+                                <p class="text-xs font-semibold text-gray-900">
+                                    {{ __('Arrives between :min and :max', [
+                                        'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
+                                        'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
+                                    ]) }}
+                                </p>
+                                <p class="text-[11px] text-gray-400">#{{ $order->id }}</p>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <p class="text-sm text-gray-500">{{ __('No orders yet') }}</p>
+                @endforelse
+            </section>
+
         </div>
 
     </div>

@@ -51,7 +51,19 @@
                 class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
              <input type="text" name="address" placeholder="{{ __('Address') }}"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">    
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+
+            <select name="country"
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black bg-white text-gray-800">
+                @foreach (['Colombia', 'Perú', 'Ecuador', 'Venezuela', 'Panamá', 'Costa Rica', 'República Dominicana', 'Guatemala', 'Honduras', 'Nicaragua', 'El Salvador', 'México', 'Bolivia', 'Brasil', 'Chile', 'Argentina', 'Uruguay', 'Paraguay', 'Estados Unidos', 'Canadá', 'España', 'Otro'] as $country)
+                    <option value="{{ $country }}" {{ old('country', 'Colombia') === $country ? 'selected' : '' }}>
+                        {{ $country }}
+                    </option>
+                @endforeach
+            </select>
+
+            <input type="tel" name="phone" placeholder="{{ __('Phone') }}" value="{{ old('phone') }}"
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
 
             <input type="email" name="email" placeholder="{{ __('Email') }}"
                 class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
