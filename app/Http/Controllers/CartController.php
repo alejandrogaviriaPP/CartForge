@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use App\Services\ShippingEstimator;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
@@ -88,12 +90,49 @@ class CartController extends Controller
         return view('products.cart', compact('cart', 'total'));
     }
 
-    public function checkout()
+    public function checkout(ShippingEstimator $shipping)
     {
+        $cart = session()->get('cart', []);
+        $user = auth()->user();
+
+        if (empty($cart) || ! $user) {
+            return response()->json([
+                'success' => false,
+            ]);
+        }
+
+        $order = DB::transaction(function () use ($cart, $user, $shipping) {
+            $total = array_sum(array_map(fn ($item) => $item['price'] * $item['quantity'], $cart));
+
+            ['min' => $deliveryMin, 'max' => $deliveryMax] = $shipping->estimate($user->country);
+
+            $order = $user->orders()->create([
+                'total' => $total,
+                'country' => $user->country ?? 'Colombia',
+                'delivery_min' => $deliveryMin->toDateString(),
+                'delivery_max' => $deliveryMax->toDateString(),
+            ]);
+
+            foreach ($cart as $id => $item) {
+                $order->items()->create([
+                    'product_id' => $id,
+                    'name' => $item['name'],
+                    'price' => $item['price'],
+                    'quantity' => $item['quantity'],
+                ]);
+            }
+
+            return $order;
+        });
+
         session()->forget('cart');
 
         return response()->json([
             'success' => true,
+            'deliveryText' => __('Arrives between :min and :max', [
+                'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
+                'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
+            ]),
         ]);
     }
 }

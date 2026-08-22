@@ -168,11 +168,13 @@ export function checkout() {
                     Swal.fire({
                         icon: "success",
                         title: t("order_placed_title", "Order Placed!"),
-                        text: t(
-                            "order_placed_text",
-                            "Your order has been processed successfully.",
-                        ),
-                        timer: 1000,
+                        text:
+                            data.deliveryText ||
+                            t(
+                                "order_placed_text",
+                                "Your order has been processed successfully.",
+                            ),
+                        timer: 4000,
                         showConfirmButton: false,
                     });
 

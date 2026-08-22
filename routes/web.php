@@ -5,6 +5,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\LanguageController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\WishlistController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', [ProductController::class, 'information'])->name('home');
@@ -24,6 +25,9 @@ Route::middleware('auth')->group(function () {
     Route::post('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
     Route::post('/cart/update/{id}', [CartController::class, 'update'])->name('cart.update');
+
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    Route::post('/wishlist/{product}', [WishlistController::class, 'toggle'])->name('wishlist.toggle');
 });
 
 Route::get('/dashboard', function () {

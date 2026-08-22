@@ -19,8 +19,13 @@ class AppServiceProvider extends ServiceProvider
 
             $cart = session('cart', []);
 
+            $wishlistIds = auth()->user()
+                ? auth()->user()->wishlistProducts()->pluck('products.id')->all()
+                : [];
+
             $view->with([
                 'cartCount' => array_sum(array_column($cart, 'quantity')),
+                'wishlistIds' => $wishlistIds,
                 'i18n' => [
                     'login_required_title' => __('Login required'),
                     'login_required_text' => __('You need to login to add items to your cart'),
@@ -42,6 +47,10 @@ class AppServiceProvider extends ServiceProvider
                     'error_title' => __('Error'),
                     'error_text' => __('Something went wrong with the transaction.'),
                     'rating_saved' => __('Thank you for your rating!'),
+                    'wishlist_added' => __('Added to your wishlist'),
+                    'wishlist_removed' => __('Removed from your wishlist'),
+                    'wishlist_login_required' => __('Log in to save favorites'),
+                    'wishlist_error' => __('Could not update your wishlist'),
                 ],
             ]);
         });
