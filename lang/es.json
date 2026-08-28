@@ -12,7 +12,7 @@
     "Checkout": "Finalizar compra",
     "Search products": "Buscar productos",
     "Language": "Idioma",
-    "welcome_email_subject": "¡Bienvenido a CartForge! 🛒",
+    "welcome_email_subject": "¡Bienvenido a CartForge! ",
     "welcome_email_greeting": "Hola :name 👋",
     "welcome_email_intro": "¡Gracias por unirte a CartForge! Tu cuenta está lista. Descubre lo último en tecnología, moda y artículos para el hogar, todo en un solo lugar.",
     "welcome_email_explore": "Explora nuestras categorías",
@@ -165,5 +165,8 @@
     "Added to your wishlist": "Añadido a tu lista de deseos",
     "Removed from your wishlist": "Eliminado de tu lista de deseos",
     "Log in to save favorites": "Inicia sesión para guardar favoritos",
-    "Could not update your wishlist": "No se pudo actualizar tu lista de deseos"
+    "Could not update your wishlist": "No se pudo actualizar tu lista de deseos",
+    "Personal information": "Información personal",
+    "Total": "Total",
+    "Shipping to": "Envío a"
 }

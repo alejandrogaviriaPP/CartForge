@@ -43,7 +43,7 @@
 
             <button type="button"
                     onclick="fillDemoCredentials()"
-                    class="w-full py-2 bg-gray-900 text-white rounded-xl font-medium hover:bg-gray-800 transition active:scale-95 text-center">
+                    class="w-full py-2 bg-green-600 text-white rounded-xl font-medium hover:bg-green-700 transition active:scale-95 text-center">
                 {{ __('Autofill & Login') }}
             </button>
         </div>
@@ -64,10 +64,10 @@
             @csrf
 
             <input type="email" name="email" placeholder="{{ __('Email') }}"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <input id="password" type="password" name="password" placeholder="{{ __('Password') }}"
-                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <button type="button" onclick="togglePassword()"
                 class="text-xs text-gray-500 mt-1">
@@ -75,8 +75,8 @@
             </button>
 
             <button
-                class="w-full mt-6 bg-black text-white py-2 rounded-lg
-                       hover:bg-gray-800 transition active:scale-95 hover:shadow-lg">
+                class="w-full mt-6 bg-green-600 text-white py-2 rounded-lg
+                       hover:bg-green-700 transition active:scale-95 hover:shadow-lg">
                 {{ __('Login') }}
             </button>
 

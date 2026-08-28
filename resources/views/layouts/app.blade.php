@@ -76,7 +76,7 @@
                 <div class="bg-gray-50/50 p-6 sm:p-8 rounded-3xl border border-gray-100 h-fit">
                     <p class="text-sm font-semibold text-gray-900 mb-2">{{ __('New Arrivals') }}</p>
                     <p class="text-xs text-gray-500 leading-relaxed mb-4">{{ __('Check out our latest tech and lifestyle releases for this season.') }}</p>
-                    <a href="/products" class="text-blue-600 text-xs font-bold hover:underline">{{ __('See what\'s new →') }}</a>
+                    <a href="/products" class="text-green-600 text-xs font-bold hover:underline">{{ __('See what\'s new →') }}</a>
                 </div>
             </div>
         </div>
@@ -108,18 +108,18 @@
                     <p class="text-xs font-bold text-gray-400 uppercase tracking-[0.2em]">{{ __('Our Collections') }}</p>
                     <div class="flex flex-col gap-4 sm:gap-5">
                         <a href="/products?category=tech"
-                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-blue-600 transition">{{ __('Tech') }}</a>
+                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-green-600 transition">{{ __('Tech') }}</a>
                         <a href="/products?category=fashion"
-                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-blue-600 transition">{{ __('Fashion') }}</a>
+                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-green-600 transition">{{ __('Fashion') }}</a>
                         <a href="/products?category=home"
-                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-blue-600 transition">{{ __('Home Goods') }}</a>
+                            class="text-xl sm:text-2xl font-medium text-gray-800 hover:text-green-600 transition">{{ __('Home Goods') }}</a>
                     </div>
                 </div>
 
                 <div class="bg-gray-50/50 p-6 sm:p-8 rounded-3xl border border-gray-100 h-fit">
                     <p class="text-sm font-semibold text-gray-900 mb-2">{{ __('Curated Spaces') }}</p>
                     <p class="text-xs text-gray-500 leading-relaxed mb-4">{{ __('Explore minimal hardware, premium garments, and essential products designed for daily utility.') }}</p>
-                    <a href="/products" class="text-blue-600 text-xs font-bold hover:underline">{{ __('View all categories →') }}</a>
+                    <a href="/products" class="text-green-600 text-xs font-bold hover:underline">{{ __('View all categories →') }}</a>
                 </div>
             </div>
         </div>
@@ -161,7 +161,7 @@
                                 d="M2.25 3h1.386a1.5 1.5 0 0 1 1.415 1.022L5.383 5.25m0 0h13.867 a1.5 1.5 0 0 1 1.464 1.825l-1.5 7.5 a1.5 1.5 0 0 1-1.464 1.175H8.239 a1.5 1.5 0 0 1-1.464-1.175L5.383 5.25Zm3.367 13.5a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm8.25 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                         </svg>
                         <span id="cart-count"
-                            class="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] text-[9px] bg-gray-900 text-white flex items-center justify-center rounded-full font-bold">
+                            class="absolute -top-1.5 -right-2 min-w-[14px] h-[14px] text-[9px] bg-green-600 text-white flex items-center justify-center rounded-full font-bold">
                             {{ $cartCount ?? 0 }}
                         </span>
                     </a>
@@ -169,7 +169,7 @@
                     <x-profile-link class="ml-1 sm:ml-2 pl-2 sm:pl-4 border-l border-gray-200" />
                 @else
                     <a href="/login" title="{{ __('Login') }}"
-                        class="hover:scale-105 active:scale-95 transition text-gray-700 hover:text-blue-600">
+                        class="hover:scale-105 active:scale-95 transition text-gray-700 hover:text-green-600">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
                             stroke="currentColor" class="w-4 h-4 text-black/80">
                             <path stroke-linecap="round" stroke-linejoin="round"

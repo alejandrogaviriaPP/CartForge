@@ -48,31 +48,24 @@
             @csrf
 
             <input type="text" name="name" placeholder="{{ __('Name') }}"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
              <input type="text" name="address" placeholder="{{ __('Address') }}"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
-            <select name="country"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black bg-white text-gray-800">
-                @foreach (['Colombia', 'Perú', 'Ecuador', 'Venezuela', 'Panamá', 'Costa Rica', 'República Dominicana', 'Guatemala', 'Honduras', 'Nicaragua', 'El Salvador', 'México', 'Bolivia', 'Brasil', 'Chile', 'Argentina', 'Uruguay', 'Paraguay', 'Estados Unidos', 'Canadá', 'España', 'Otro'] as $country)
-                    <option value="{{ $country }}" {{ old('country', 'Colombia') === $country ? 'selected' : '' }}>
-                        {{ $country }}
-                    </option>
-                @endforeach
-            </select>
+            <x-country-select :selected="old('country', 'Colombia')" class="mt-2" />
 
             <input type="tel" name="phone" placeholder="{{ __('Phone') }}" value="{{ old('phone') }}"
-                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-2 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <input type="email" name="email" placeholder="{{ __('Email') }}"
-                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <input id="password" type="password" name="password" placeholder="{{ __('Password') }}"
-                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <input type="password" name="password_confirmation" placeholder="{{ __('Confirm Password') }}"
-                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-black">
+                class="w-full mt-3 p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
 
             <button type="button" onclick="togglePassword()" 
                 class="text-xs text-gray-500 mt-1">
@@ -80,8 +73,8 @@
             </button>
 
             <button
-                class="w-full mt-6 bg-black text-white py-2 rounded-lg
-                       hover:bg-gray-800 transition active:scale-95 hover:shadow-lg">
+                class="w-full mt-6 bg-green-600 text-white py-2 rounded-lg
+                       hover:bg-green-700 transition active:scale-95 hover:shadow-lg">
                 {{ __('Create Account') }}
             </button>
 

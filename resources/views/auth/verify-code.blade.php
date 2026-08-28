@@ -19,8 +19,8 @@
                 animate-[fadeIn_0.6s_ease]">
 
         <div class="text-center mb-6">
-            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-blue-50 flex items-center justify-center">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-7 h-7 text-blue-600">
+            <div class="w-14 h-14 mx-auto mb-4 rounded-full bg-green-50 flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7" stroke="currentColor" class="w-7 h-7 text-green-600">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M16.5 12a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zm0 0c0 1.657 1.007 3 2.25 3S21 13.657 21 12a9 9 0 10-2.636 6.364M16.5 12V8.25" />
                 </svg>
             </div>
@@ -46,14 +46,14 @@
                 placeholder="{{ __('login_code.code_placeholder') }}"
                 value="{{ old('code') }}"
                 autofocus
-                class="w-full text-center tracking-[0.5em] text-xl sm:text-2xl font-bold p-3 border rounded-lg focus:ring-2 focus:ring-black {{ $errors->has('code') ? 'border-red-400' : '' }}">
+                class="w-full text-center tracking-[0.5em] text-xl sm:text-2xl font-bold p-3 border rounded-lg focus:ring-2 focus:ring-green-600 {{ $errors->has('code') ? 'border-red-400' : '' }}">
 
             @error('code')
                 <p class="text-red-500 text-xs mt-2 text-center">{{ $message }}</p>
             @enderror
 
-            <button class="w-full mt-6 bg-black text-white py-2 rounded-lg
-                           hover:bg-gray-800 transition active:scale-95 hover:shadow-lg">
+            <button class="w-full mt-6 bg-green-600 text-white py-2 rounded-lg
+                           hover:bg-green-700 transition active:scale-95 hover:shadow-lg">
                 {{ __('login_code.confirm_btn') }}
             </button>
         </form>
@@ -61,7 +61,7 @@
         <div class="flex flex-col sm:flex-row items-center sm:items-center justify-between gap-3 sm:gap-0 mt-5 text-sm">
             <form method="POST" action="{{ route('login.verify.resend') }}" class="w-full sm:w-auto">
                 @csrf
-                <button type="submit" class="text-blue-600 hover:underline w-full sm:w-auto">
+                <button type="submit" class="text-green-600 hover:underline w-full sm:w-auto">
                     {{ __('login_code.resend') }}
                 </button>
             </form>

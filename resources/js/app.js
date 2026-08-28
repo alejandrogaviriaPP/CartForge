@@ -18,6 +18,16 @@ document.addEventListener("DOMContentLoaded", () => {
         }, 300);
     }
 });
+document.querySelectorAll(".order-toggle").forEach((row) => {
+    row.addEventListener("click", () => {
+        const details = row.nextElementSibling;
+        const chevron = row.querySelector(".order-chevron");
+
+        if (details) details.classList.toggle("hidden");
+        if (chevron) chevron.classList.toggle("rotate-180");
+    });
+});
+
 const searchBtn = document.getElementById("search-btn");
 const overlay = document.getElementById("search-overlay");
 const closeBtn = document.getElementById("close-search");

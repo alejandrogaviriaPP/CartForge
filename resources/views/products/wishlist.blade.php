@@ -52,7 +52,7 @@
                         <div class="p-2 sm:p-4 flex flex-col flex-grow text-center min-w-0">
 
                             <a href="{{ route('products.show', $product) }}"
-                                class="text-sm sm:text-lg font-semibold text-gray-900 truncate hover:text-blue-600 transition">
+                                class="text-sm sm:text-lg font-semibold text-gray-900 truncate hover:text-green-600 transition">
                                 {{ $product->name }}
                             </a>
 

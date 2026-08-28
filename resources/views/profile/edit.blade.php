@@ -43,6 +43,41 @@
         <div class="space-y-6">
 
             <section class="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-4 sm:p-6">
+                <h2 class="text-base font-semibold text-gray-900 mb-4">{{ __('Personal information') }}</h2>
+
+                <form method="POST" action="{{ route('profile.update') }}" class="space-y-3">
+                    @csrf
+                    @method('PATCH')
+
+                    <input type="text" name="name" value="{{ old('name', $user->name) }}" placeholder="{{ __('Name') }}"
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+
+                    <input type="email" name="email" value="{{ old('email', $user->email) }}"
+                        placeholder="{{ __('Email') }}"
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+
+                    <input type="tel" name="phone" value="{{ old('phone', $user->phone) }}"
+                        placeholder="{{ __('Phone') }}"
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+
+                    <input type="text" name="address" value="{{ old('address', $user->address) }}"
+                        placeholder="{{ __('Address') }}"
+                        class="w-full p-2 border rounded-lg focus:ring-2 focus:ring-green-600">
+
+                    <x-country-select :selected="old('country', $user->country)" />
+
+                    @if (session('status'))
+                        <p class="text-xs font-semibold text-green-600">{{ __('Saved.') }}</p>
+                    @endif
+
+                    <button type="submit"
+                        class="bg-green-600 text-white px-5 py-2 rounded-lg text-sm hover:-translate-y-0.5 active:scale-95 transition">
+                        {{ __('Save') }}
+                    </button>
+                </form>
+            </section>
+
+            <section class="bg-white rounded-2xl shadow-sm ring-1 ring-black/5 p-4 sm:p-6">
                 <h2 class="text-base font-semibold text-gray-900 mb-4">{{ __('Language') }}</h2>
                 <div class="rounded-xl border border-gray-200 overflow-hidden divide-y divide-gray-100">
                     <x-language-options />
@@ -72,29 +107,67 @@
                 <h2 class="text-base font-semibold text-gray-900 mb-4">{{ __('My orders') }}</h2>
 
                 @forelse ($orders as $order)
-                    <div class="flex items-center justify-between gap-3 py-3 {{ ! $loop->first ? 'border-t border-gray-100' : '' }}">
-                        <div class="min-w-0">
-                            <p class="text-sm font-semibold text-gray-900">${{ number_format($order->total, 2) }}</p>
-                            <p class="text-xs text-gray-500 truncate">
-                                {{ $order->created_at->locale(app()->getLocale())->translatedFormat('d M Y') }} ·
-                                {{ $order->items->sum('quantity') }} {{ __('items') }} ·
-                                {{ $order->items->first()->name }}@if ($order->items->count() > 1)+{{ $order->items->count() - 1 }}@endif
-                            </p>
-                        </div>
-                        <div class="text-right shrink-0">
-                            @if ($order->delivery_max->isPast())
-                                <span class="inline-flex text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
-                                    {{ __('Delivered') }}
-                                </span>
-                            @else
-                                <p class="text-xs font-semibold text-gray-900">
-                                    {{ __('Arrives between :min and :max', [
-                                        'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
-                                        'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
-                                    ]) }}
+                    <div class="{{ ! $loop->first ? 'border-t border-gray-100' : '' }}">
+                        <div
+                            class="order-toggle flex items-center justify-between gap-3 py-3 -mx-2 px-2 rounded-lg cursor-pointer select-none hover:bg-gray-50 transition">
+                            <div class="min-w-0">
+                                <p class="text-sm font-semibold text-gray-900">${{ number_format($order->total, 2) }}</p>
+                                <p class="text-xs text-gray-500 truncate">
+                                    {{ $order->created_at->locale(app()->getLocale())->translatedFormat('d M Y') }} ·
+                                    {{ $order->items->sum('quantity') }} {{ __('items') }} ·
+                                    {{ $order->items->first()->name }}@if ($order->items->count() > 1)+{{ $order->items->count() - 1 }}@endif
                                 </p>
-                                <p class="text-[11px] text-gray-400">#{{ $order->id }}</p>
-                            @endif
+                            </div>
+                            <div class="flex items-center gap-2 shrink-0">
+                                <div class="text-right">
+                                    @if ($order->delivery_max->isPast())
+                                        <span
+                                            class="inline-flex text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
+                                            {{ __('Delivered') }}
+                                        </span>
+                                    @else
+                                        <p class="text-xs font-semibold text-gray-900">
+                                            {{ __('Arrives between :min and :max', [
+                                                'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
+                                                'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
+                                            ]) }}
+                                        </p>
+                                        <p class="text-[11px] text-gray-400">#{{ $order->id }}</p>
+                                    @endif
+                                </div>
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                    stroke-width="1.7" stroke="currentColor"
+                                    class="order-chevron w-4 h-4 text-gray-400 transition-transform">
+                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                        d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="order-details hidden pb-4">
+                            <div class="rounded-xl bg-gray-50 p-3 sm:p-4 space-y-2">
+                                @foreach ($order->items as $item)
+                                    <div class="flex items-center justify-between gap-3 text-sm">
+                                        <span class="text-gray-700 min-w-0 truncate">
+                                            {{ $item->name }}
+                                            <span class="text-gray-400">×{{ $item->quantity }}</span>
+                                        </span>
+                                        <span class="text-gray-900 font-medium shrink-0">
+                                            ${{ number_format($item->price * $item->quantity, 2) }}
+                                        </span>
+                                    </div>
+                                @endforeach
+
+                                <div
+                                    class="border-t border-gray-200 pt-2 flex items-center justify-between text-sm font-semibold">
+                                    <span>{{ __('Total') }}</span>
+                                    <span>${{ number_format($order->total, 2) }}</span>
+                                </div>
+
+                                <p class="text-xs text-gray-500 pt-1">
+                                    {{ __('Shipping to') }} {{ $order->country }} · #{{ $order->id }}
+                                </p>
+                            </div>
                         </div>
                     </div>
                 @empty

@@ -33,7 +33,7 @@
                         <div class="flex gap-2 sm:gap-3 overflow-x-auto pb-2">
                             @foreach ($images as $index => $image)
                                 <button type="button" data-image="{{ asset($image) }}"
-                                    class="gallery-thumb shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg border-2 overflow-hidden bg-white flex items-center justify-center transition {{ $loop->first ? 'border-blue-600' : 'border-gray-200 hover:border-gray-400' }}">
+                                    class="gallery-thumb shrink-0 w-16 h-16 sm:w-20 sm:h-20 rounded-lg border-2 overflow-hidden bg-white flex items-center justify-center transition {{ $loop->first ? 'border-green-600' : 'border-gray-200 hover:border-gray-400' }}">
                                     <img src="{{ asset($image) }}" alt="{{ $product->name }} - {{ $index + 1 }}"
                                         class="w-full h-full object-contain">
                                 </button>
@@ -87,7 +87,7 @@
 
                         <button type="button"
                             data-id="{{ $product->id }}"
-                            class="add-to-cart-btn flex-1 bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 active:scale-95 transition">
+                            class="add-to-cart-btn flex-1 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 active:scale-95 transition">
                             {{ __('Add to cart') }}
                         </button>
 
@@ -120,7 +120,7 @@
                             </div>
                         @else
                             <a href="{{ route('login') }}"
-                                class="flex-1 border-2 border-gray-200 text-gray-600 px-6 py-3 rounded-xl font-semibold text-center hover:border-blue-600 hover:text-blue-600 transition">
+                                class="flex-1 border-2 border-gray-200 text-gray-600 px-6 py-3 rounded-xl font-semibold text-center hover:border-green-600 hover:text-green-600 transition">
                                 {{ __('Login to rate') }}
                             </a>
                         @endauth
@@ -248,11 +248,11 @@
                     </label>
                     <textarea id="rating-comment" rows="4"
                         placeholder="{{ __('Write a comment about this product...') }}"
-                        class="w-full rounded-xl border-gray-300 focus:border-blue-500 focus:ring-blue-500 text-sm resize-none">{{ $userRating?->comment ?? '' }}</textarea>
+                        class="w-full rounded-xl border-gray-300 focus:border-green-500 focus:ring-green-500 text-sm resize-none">{{ $userRating?->comment ?? '' }}</textarea>
                 </div>
 
                 <button type="button" id="submit-rating"
-                    class="w-full bg-blue-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-blue-700 active:scale-95 transition">
+                    class="w-full bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 active:scale-95 transition">
                     {{ __('Submit rating') }}
                 </button>
             </div>

@@ -132,7 +132,7 @@ export function checkout() {
                 "empty_cart_text",
                 "Your shopping cart is currently empty.",
             ),
-            confirmButtonColor: "#3085d6",
+            confirmButtonColor: "#16a34a",
         });
         return;
     }
@@ -187,7 +187,7 @@ export function checkout() {
                         <div class="text-center py-10">
                             <h1 class="text-3xl font-bold mb-6">${t("shopping_cart", "Shopping Cart")}</h1>
                             <p class="text-gray-500">${t("cart_empty_thanks", "Your cart is now empty. Thank you for your purchase!")}</p>
-                            <a href="/products" class="mt-4 inline-block  text-white px-6 py-2 rounded-lg">${t("back_to_products", "Back to Products")}</a>
+                            <a href="/products" class="mt-4 inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-2 rounded-lg transition">${t("back_to_products", "Back to Products")}</a>
                         </div>
                     `;
                     }
