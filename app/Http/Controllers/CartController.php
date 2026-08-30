@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\PaymentRequestMail;
 use App\Models\Product;
 use App\Services\ShippingEstimator;
+use App\Services\WompiPayment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class CartController extends Controller
 {
@@ -90,7 +93,7 @@ class CartController extends Controller
         return view('products.cart', compact('cart', 'total'));
     }
 
-    public function checkout(ShippingEstimator $shipping)
+    public function checkout(Request $request, ShippingEstimator $shipping)
     {
         $cart = session()->get('cart', []);
         $user = auth()->user();
@@ -101,14 +104,37 @@ class CartController extends Controller
             ]);
         }
 
-        $order = DB::transaction(function () use ($cart, $user, $shipping) {
-            $total = array_sum(array_map(fn ($item) => $item['price'] * $item['quantity'], $cart));
+        $validated = $request->validate([
+            'payment_method' => ['required', 'in:card,paypal,nequi'],
+        ]);
+
+        $rules = match ($validated['payment_method']) {
+            'card' => [
+                'payment_details.card_number' => ['required', 'digits:16'],
+                'payment_details.card_holder' => ['required', 'string', 'min:3'],
+                'payment_details.card_expiry' => ['required', 'date_format:m/y'],
+                'payment_details.card_cvv' => ['required', 'digits_between:3,4'],
+            ],
+            'paypal' => [
+                'payment_details.paypal_email' => ['required', 'email'],
+            ],
+            'nequi' => [
+                'payment_details.nequi_phone' => ['required', 'digits:10'],
+            ],
+        };
+
+        $request->validate($rules);
+
+        $order = DB::transaction(function () use ($cart, $user, $shipping, $validated) {
+            $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
 
             ['min' => $deliveryMin, 'max' => $deliveryMax] = $shipping->estimate($user->country);
 
             $order = $user->orders()->create([
                 'total' => $total,
                 'country' => $user->country ?? 'Colombia',
+                'payment_method' => $validated['payment_method'],
+                'status' => 'pending',
                 'delivery_min' => $deliveryMin->toDateString(),
                 'delivery_max' => $deliveryMax->toDateString(),
             ]);
@@ -124,6 +150,34 @@ class CartController extends Controller
 
             return $order;
         });
+
+        $payment = app(WompiPayment::class);
+
+        if ($payment->isConfigured()) {
+            $link = $payment->createPaymentLink($order, $user->email);
+
+            if ($link === null) {
+                return response()->json(['success' => false]);
+            }
+
+            $order->update([
+                'payment_reference' => $link['reference'],
+                'payment_url' => $link['url'],
+            ]);
+
+            Mail::to($user->email)->send(new PaymentRequestMail($order, $link['url']));
+
+            return response()->json([
+                'success' => true,
+                'payment_url' => $link['url'],
+                'deliveryText' => __('Arrives between :min and :max', [
+                    'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
+                    'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
+                ]),
+            ]);
+        }
+
+        $order->update(['status' => 'paid']);
 
         session()->forget('cart');
 

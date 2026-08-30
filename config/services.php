@@ -41,4 +41,11 @@ return [
         'redirect' => env('GOOGLE_REDIRECT_URI'),
     ],
 
+    'wompi' => [
+        'public_key' => env('WOMPI_PUBLIC_KEY'),
+        'integrity_key' => env('WOMPI_INTEGRITY_KEY'),
+        'events_key' => env('WOMPI_EVENTS_KEY'),
+        'url' => env('WOMPI_URL', 'https://production.wompi.co/v1'),
+    ],
+
 ];
