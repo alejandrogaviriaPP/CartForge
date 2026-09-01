@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Exceptions\InsufficientStockException;
 use App\Mail\PaymentRequestMail;
 use App\Models\Product;
 use App\Services\ShippingEstimator;
@@ -16,6 +17,15 @@ class CartController extends Controller
     {
         $product = Product::findOrFail($id);
         $cart = session()->get('cart', []);
+
+        $currentQuantity = $cart[$id]['quantity'] ?? 0;
+
+        if ($currentQuantity + 1 > $product->stock) {
+            return response()->json([
+                'success' => false,
+                'message' => __('There is not enough stock for :name', ['name' => $product->name]),
+            ]);
+        }
 
         if (isset($cart[$id])) {
             $cart[$id]['quantity']++;
@@ -62,7 +72,8 @@ class CartController extends Controller
             if ($request->quantity <= 0) {
                 unset($cart[$id]);
             } else {
-                $cart[$id]['quantity'] = $request->quantity;
+                $stock = (int) Product::find($id)?->stock;
+                $cart[$id]['quantity'] = min($request->quantity, $stock);
             }
         }
 
@@ -125,31 +136,53 @@ class CartController extends Controller
 
         $request->validate($rules);
 
-        $order = DB::transaction(function () use ($cart, $user, $shipping, $validated) {
-            $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+        try {
+            $order = DB::transaction(function () use ($cart, $user, $shipping, $validated) {
+                $products = Product::whereIn('id', array_keys($cart))
+                    ->lockForUpdate()
+                    ->get()
+                    ->keyBy('id');
 
-            ['min' => $deliveryMin, 'max' => $deliveryMax] = $shipping->estimate($user->country);
+                foreach ($cart as $id => $item) {
+                    $product = $products[$id] ?? null;
 
-            $order = $user->orders()->create([
-                'total' => $total,
-                'country' => $user->country ?? 'Colombia',
-                'payment_method' => $validated['payment_method'],
-                'status' => 'pending',
-                'delivery_min' => $deliveryMin->toDateString(),
-                'delivery_max' => $deliveryMax->toDateString(),
-            ]);
+                    if (! $product || $product->stock < $item['quantity']) {
+                        throw InsufficientStockException::forProduct($item['name']);
+                    }
+                }
 
-            foreach ($cart as $id => $item) {
-                $order->items()->create([
-                    'product_id' => $id,
-                    'name' => $item['name'],
-                    'price' => $item['price'],
-                    'quantity' => $item['quantity'],
+                $total = array_sum(array_map(fn($item) => $item['price'] * $item['quantity'], $cart));
+
+                ['min' => $deliveryMin, 'max' => $deliveryMax] = $shipping->estimate($user->country);
+
+                $order = $user->orders()->create([
+                    'total' => $total,
+                    'country' => $user->country ?? 'Colombia',
+                    'payment_method' => $validated['payment_method'],
+                    'status' => 'pending',
+                    'delivery_min' => $deliveryMin->toDateString(),
+                    'delivery_max' => $deliveryMax->toDateString(),
                 ]);
-            }
 
-            return $order;
-        });
+                foreach ($cart as $id => $item) {
+                    $order->items()->create([
+                        'product_id' => $id,
+                        'name' => $item['name'],
+                        'price' => $item['price'],
+                        'quantity' => $item['quantity'],
+                    ]);
+
+                    $products[$id]->decrement('stock', $item['quantity']);
+                }
+
+                return $order;
+            });
+        } catch (InsufficientStockException $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage(),
+            ]);
+        }
 
         $payment = app(WompiPayment::class);
 

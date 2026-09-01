@@ -11,21 +11,15 @@ class ProductController extends Controller
 {
     public function information()
     {
-        $products = Product::all();
+        $products = Product::query()
+            ->where('stock', '>', 0)
+            ->withCount('ratings')
+            ->withAvg('ratings', 'rating')
+            ->latest('id')
+            ->take(8)
+            ->get();
 
-        return view('products.index', compact('products'));
-    }
-
-    public function create()
-    {
-        return view('products.create');
-    }
-
-    public function store(Request $request)
-    {
-        Product::create($request->all());
-
-        return redirect('/products');
+        return view('products.index', ['products' => $products, 'home' => true]);
     }
 
     public function index(Request $request)

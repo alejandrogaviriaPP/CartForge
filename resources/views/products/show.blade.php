@@ -85,11 +85,17 @@
 
                     <div class="flex flex-col sm:flex-row gap-3 mt-auto">
 
-                        <button type="button"
-                            data-id="{{ $product->id }}"
-                            class="add-to-cart-btn flex-1 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 active:scale-95 transition">
-                            {{ __('Add to cart') }}
-                        </button>
+                        @if ($product->stock > 0)
+                            <button type="button"
+                                data-id="{{ $product->id }}"
+                                class="add-to-cart-btn flex-1 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 active:scale-95 transition">
+                                {{ __('Add to cart') }}
+                            </button>
+                        @else
+                            <span class="flex-1 bg-gray-200 text-gray-500 px-6 py-3 rounded-xl font-semibold text-center cursor-not-allowed">
+                                {{ __('Out of stock') }}
+                            </span>
+                        @endif
 
                         <button type="button" data-id="{{ $product->id }}" title="{{ __('Add to wishlist') }}"
                             class="wishlist-btn shrink-0 w-12 h-12 rounded-xl border border-gray-200 bg-white flex items-center justify-center hover:scale-105 active:scale-95 transition">

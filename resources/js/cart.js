@@ -63,6 +63,11 @@ export function addToCart(id) {
         .then((data) => {
             if (!data) return;
 
+            if (data.success === false) {
+                showToast(data.message || t("error_text", "Something went wrong"));
+                return;
+            }
+
             const countEl = document.getElementById("cart-count");
 
             if (countEl && data.cartCount !== undefined) {
@@ -467,6 +472,8 @@ export async function checkout() {
                         </div>
                     `;
                     }
+                } else if (data.message) {
+                    Swal.fire(t("error_title", "Error"), data.message, "error");
                 }
             })
             .catch(() => {

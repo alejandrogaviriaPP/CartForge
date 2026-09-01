@@ -125,21 +125,20 @@
         </div>
     </div>
 
-    <nav
-        class="bg-white/70 backdrop-blur-md border-b border-gray-200/80 sticky top-0 z-50 text-[13px] tracking-tighter font-normal text-gray-800">
-        <div class="max-w-[1024px] xl:max-w-[1600px] mx-auto px-3 sm:px-6 h-12 flex items-center justify-between">
+    <nav class="glass-nav sticky top-0 z-50 text-[13px] tracking-tight text-gray-800">
+        <div class="max-w-[1024px] xl:max-w-[1600px] mx-auto px-3 sm:px-6 h-14 flex items-center justify-between">
 
-            <div class="flex justify-start shrink-0">
-                <a href=""
-                    class="text-sm font-semibold tracking-tight text-black hover:opacity-70 transition-opacity">
+            <div class="flex justify-start shrink-0 -ml-1 sm:-ml-2">
+                <a href="/"
+                    class="text-xl sm:text-xl font-extrabold tracking-tight text-gray-900 hover:text-green-600 transition-colors">
                     CartForge
                 </a>
             </div>
 
             <div class="hidden sm:flex justify-center items-center gap-10 text-gray-500 font-medium">
-                <a href="/products" class="hover:text-black transition-colors">{{ __('Home') }}</a>
+                <a href="/products" class="hover:text-gray-900 transition-colors">{{ __('Home') }}</a>
                 <button id="categories-btn"
-                    class="hover:text-black transition-colors focus:outline-none">{{ __('Categories') }}</button>
+                    class="hover:text-gray-900 transition-colors focus:outline-none">{{ __('Categories') }}</button>
             </div>
 
             <div class="flex justify-end items-center gap-3 sm:gap-6">
@@ -165,6 +164,17 @@
                             {{ $cartCount ?? 0 }}
                         </span>
                     </a>
+
+                    @if (auth()->user()?->is_admin)
+                        <a href="{{ route('admin.dashboard') }}" title="Panel de administración"
+                            class="hover:scale-105 active:scale-95 transition text-gray-700 hover:text-green-600">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.7"
+                                stroke="currentColor" class="w-4 h-4">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                    d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" />
+                            </svg>
+                        </a>
+                    @endif
 
                     <x-profile-link class="ml-1 sm:ml-2 pl-2 sm:pl-4 border-l border-gray-200" />
                 @else

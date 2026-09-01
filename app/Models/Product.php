@@ -14,6 +14,7 @@ class Product extends Model
         'description_es',
         'price',
         'old_price',
+        'stock',
         'image',
         'gallery',
         'category',
@@ -56,6 +57,11 @@ class Product extends Model
     public function ratings(): HasMany
     {
         return $this->hasMany(Rating::class);
+    }
+
+    public function orderItems(): HasMany
+    {
+        return $this->hasMany(OrderItem::class);
     }
 
     public function getAverageRatingAttribute(): float

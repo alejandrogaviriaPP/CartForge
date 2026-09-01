@@ -15,6 +15,12 @@ return Application::configure(basePath: dirname(__DIR__))
             \App\Http\Middleware\SetLocale::class,
         ]);
 
+        $middleware->trustProxies(at: '127.0.0.1');
+
+        $middleware->alias([
+            'admin' => \App\Http\Middleware\EnsureUserIsAdmin::class,
+        ]);
+
         $middleware->validateCsrfTokens(except: [
             'webhooks/wompi',
         ]);

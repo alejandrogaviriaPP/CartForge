@@ -1,6 +1,6 @@
 # CartForge
 
-Minimalist e-commerce built with Laravel, inspired by Apple's Liquid Glass design. It offers a fluid shopping experience with internationalization (EN/ES), email-based two-factor authentication, product listings with ratings and reviews, a wishlist, and order history with delivery estimates.
+Minimalist e-commerce built with Laravel. It offers a fluid shopping experience with internationalization (EN/ES), email-based two-factor authentication, product listings with ratings and reviews, a wishlist, and order history with delivery estimates.
 
 ## Features
 

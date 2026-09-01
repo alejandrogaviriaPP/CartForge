@@ -120,20 +120,16 @@
                             </div>
                             <div class="flex items-center gap-2 shrink-0">
                                 <div class="text-right">
-                                    @if ($order->delivery_max->isPast())
-                                        <span
-                                            class="inline-flex text-xs font-semibold text-green-700 bg-green-50 px-2.5 py-1 rounded-full">
-                                            {{ __('Delivered') }}
-                                        </span>
-                                    @else
-                                        <p class="text-xs font-semibold text-gray-900">
+                                    <x-order-status :status="$order->status" />
+                                    @if (! in_array($order->status, ['delivered', 'cancelled']))
+                                        <p class="text-xs font-semibold text-gray-900 mt-0.5">
                                             {{ __('Arrives between :min and :max', [
                                                 'min' => $order->delivery_min->locale(app()->getLocale())->translatedFormat('j M'),
                                                 'max' => $order->delivery_max->locale(app()->getLocale())->translatedFormat('j M'),
                                             ]) }}
                                         </p>
-                                        <p class="text-[11px] text-gray-400">#{{ $order->id }}</p>
                                     @endif
+                                    <p class="text-[11px] text-gray-400">#{{ $order->id }}</p>
                                 </div>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                     stroke-width="1.7" stroke="currentColor"
@@ -167,6 +163,18 @@
                                 <p class="text-xs text-gray-500 pt-1">
                                     {{ __('Shipping to') }} {{ $order->country }} · #{{ $order->id }}
                                 </p>
+
+                                @if ($order->cancellable())
+                                    <form action="{{ route('orders.cancel', $order) }}" method="POST"
+                                        onsubmit="return confirm('{{ __('Cancel this order?') }}')"
+                                        class="pt-2">
+                                        @csrf
+                                        <button type="submit"
+                                            class="w-full sm:w-auto px-4 py-2 rounded-xl text-xs font-semibold bg-red-50 text-red-600 hover:bg-red-100 transition">
+                                            {{ __('Cancel order') }}
+                                        </button>
+                                    </form>
+                                @endif
                             </div>
                         </div>
                     </div>
